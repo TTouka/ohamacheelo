@@ -83,7 +83,7 @@ function Member({ member, roll, onClick, ...rest }) {
                   }}
                 >
                   {roll.log.map((roll, idx) => (
-                    <span>{roll.dice ?? "\u00d7"}</span>
+                    <span key={idx}>{roll.dice ?? "\u00d7"}</span>
                   ))}
                 </Typography>
               )}

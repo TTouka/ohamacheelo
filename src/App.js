@@ -6,7 +6,10 @@ import MemberDialog from "./Ohama/MemberDialog";
 import ConfigDialog from "./Ohama/ConfigDialog";
 
 function App() {
-  const [members, setMembers] = useState([]);
+  const [members, setMembers] = useState([
+    { name: "まっち", point: 10000, isDealer: true },
+    { name: "まちこ", point: 10000 },
+  ]);
   const [config, setConfig] = useState({
     initialPoint: 10000,
     betPoint: 1000,
