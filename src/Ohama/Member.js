@@ -49,6 +49,7 @@ function Member({ member, roll, onClick, ...rest }) {
                 textOverflow: "ellipsis",
               }}
             >
+              {member.isDealer && `\u{1F3B2}`}
               {member.name}
             </Typography>
           </Box>

@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Dialog,
   DialogContent,
@@ -10,55 +11,67 @@ import {
   TableRow,
   TextField,
 } from "@mui/material";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
-function MemberDialog({ open, onClose, members, setMembers }) {
+function MemberDialog({ config, open, onClose, members, setMembers }) {
+  const [tmpMembers, setTmpMembers] = useState([...members]);
+  useEffect(() => {
+    setTmpMembers([...members]);
+  }, [setTmpMembers, members]);
+
+  //
+  const handleSaveMembers = useCallback(() => {
+    setMembers(tmpMembers);
+    onClose();
+  }, [setMembers, onClose, tmpMembers]);
+
+  //
   const [toAdd, setToAdd] = useState("");
+  const handleAddMember = useCallback(
+    (ev) => {
+      ev.preventDefault();
 
+      if (toAdd === "" || tmpMembers.map(({ name }) => name).includes(toAdd)) {
+        return false;
+      }
+
+      setTmpMembers([
+        ...tmpMembers,
+        {
+          name: toAdd,
+          point: config.initialPoint,
+          isDealer: tmpMembers.length === 0,
+        },
+      ]);
+      setToAdd("");
+    },
+    [config, tmpMembers, setTmpMembers, toAdd, setToAdd]
+  );
+
+  //
   const handleToDealer = useCallback(
     (memberName) => () => {
-      setMembers([
-        ...members.map((member) => {
+      setTmpMembers([
+        ...tmpMembers.map((member) => {
           member.isDealer = member.name === memberName;
           return member;
         }),
       ]);
     },
-    [members, setMembers]
+    [tmpMembers, setTmpMembers]
   );
-
   const handleDelete = useCallback(
     (memberName) => () => {
-      setMembers([...members.filter((member) => member.name !== memberName)]);
-    },
-    [setMembers, members]
-  );
-
-  const handleAddMember = useCallback(
-    (ev) => {
-      ev.preventDefault();
-
-      if (toAdd === "" || members.map(({ name }) => name).includes(toAdd)) {
-        return false;
-      }
-
-      setMembers([
-        ...members,
-        {
-          name: toAdd,
-          point: 10000,
-          isDealer: members.length === 0,
-        },
+      setTmpMembers([
+        ...tmpMembers.filter((member) => member.name !== memberName),
       ]);
-      setToAdd("");
     },
-    [members, setMembers, toAdd, setToAdd]
+    [setTmpMembers, tmpMembers]
   );
-
   const handleChangePoint = useCallback(
     (memberName) => (ev) => {
-      setMembers([
-        ...members.map((member) => {
+      setTmpMembers([
+        ...tmpMembers.map((member) => {
           if (member.name === memberName) {
             member.point = Number(ev.target.value);
           }
@@ -67,14 +80,40 @@ function MemberDialog({ open, onClose, members, setMembers }) {
         }),
       ]);
     },
-    [members, setMembers]
+    [tmpMembers, setTmpMembers]
+  );
+
+  //
+  const handleEntering = useCallback(() => {
+    setTmpMembers([...members]);
+  }, [setTmpMembers, members]);
+  const handleClose = useCallback(
+    (ev, reason) => {
+      if (reason === "escapeKeyDown" || reason === "backdropClick") {
+        onClose();
+
+        return;
+      }
+
+      setMembers(tmpMembers);
+      onClose();
+    },
+    [setMembers, onClose, tmpMembers]
   );
 
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
+    <Dialog
+      open={open}
+      onClose={handleClose}
+      fullWidth
+      maxWidth="md"
+      TransitionProps={{
+        onEntering: handleEntering,
+      }}
+    >
       <DialogTitle>参加者</DialogTitle>
       <DialogContent>
-        <Table stickyHeader>
+        <Table stickyHeader size="small">
           <TableHead>
             <TableRow>
               <TableCell>名前</TableCell>
@@ -83,13 +122,14 @@ function MemberDialog({ open, onClose, members, setMembers }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {members.map((member) => (
+            {tmpMembers.map((member) => (
               <TableRow key={member.name}>
                 <TableCell>{member.name}</TableCell>
                 <TableCell>
                   <TextField
                     type="number"
                     value={member.point}
+                    size="small"
                     onChange={handleChangePoint(member.name)}
                   />
                 </TableCell>
@@ -118,13 +158,14 @@ function MemberDialog({ open, onClose, members, setMembers }) {
                 >
                   <TextField
                     value={toAdd}
+                    size="small"
                     onChange={(ev) => setToAdd(ev.target.value)}
                   />
                   <Button
                     onClick={handleAddMember}
                     disabled={
                       toAdd === "" ||
-                      members.map(({ name }) => name).includes(toAdd)
+                      tmpMembers.map(({ name }) => name).includes(toAdd)
                     }
                   >
                     追加
@@ -136,6 +177,11 @@ function MemberDialog({ open, onClose, members, setMembers }) {
             </TableRow>
           </TableBody>
         </Table>
+        <Box textAlign="right">
+          <Button color="primary" onClick={handleSaveMembers}>
+            保存
+          </Button>
+        </Box>
       </DialogContent>
     </Dialog>
   );

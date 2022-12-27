@@ -3,14 +3,21 @@ import { useCallback, useEffect, useState } from "react";
 import Member from "./Ohama/Member";
 import RollDialog from "./Ohama/RollDialog";
 import MemberDialog from "./Ohama/MemberDialog";
+import ConfigDialog from "./Ohama/ConfigDialog";
 
 function App() {
   const [members, setMembers] = useState([]);
+  const [config, setConfig] = useState({
+    initialPoint: 10000,
+    betPoint: 1000,
+  });
+
+  //
   const [member, setMember] = useState({});
   const [dialogShown, setDialogShown] = useState(false);
-
   const [rolls, setRolls] = useState([]);
 
+  //
   const handleTurnEnd = useCallback(
     (member, log) => {
       const roll = log.slice(-1)[0];
@@ -31,22 +38,50 @@ function App() {
   );
 
   const [memberDialogShown, setMemberDialogShown] = useState(false);
+  const [configDialogShown, setConfigDialogShown] = useState(false);
 
   const handleCloseMemberDialog = useCallback(() => {
-    window.localStorage.setItem("members", JSON.stringify(members));
     setMemberDialogShown(false);
-  }, [setMemberDialogShown, members]);
+  }, [setMemberDialogShown]);
+
+  const handleCloseConfigDialog = useCallback(() => {
+    setConfigDialogShown(false);
+  }, [setConfigDialogShown]);
+
+  const handleSaveMembers = useCallback(
+    (newMembers) => {
+      setMembers(newMembers);
+      window.localStorage.setItem("members", JSON.stringify(newMembers));
+    },
+    [setMembers]
+  );
+  const handleSaveConfig = useCallback(
+    (newConfig) => {
+      setConfig(newConfig);
+      window.localStorage.setItem("config", JSON.stringify(newConfig));
+    },
+    [setConfig]
+  );
 
   useEffect(() => {
-    const saved = JSON.parse(window.localStorage.getItem("members"));
-    if (saved) {
-      setMembers(saved);
+    const savedMembers = JSON.parse(window.localStorage.getItem("members"));
+    if (savedMembers) {
+      setMembers(savedMembers);
+    }
+
+    const savedConfig = JSON.parse(window.localStorage.getItem("config"));
+    if (savedConfig) {
+      setConfig(savedConfig);
     }
   }, []);
 
   useEffect(() => {
     setDialogShown(member.name !== undefined);
   }, [member]);
+
+  const dealerName = members.find(({ isDealer }) => isDealer)?.name;
+  const dealerRolled =
+    rolls.findIndex(({ memberName }) => memberName === dealerName) >= 0;
 
   return (
     <Container maxWidth="xl">
@@ -58,14 +93,27 @@ function App() {
         >
           参加者
         </Button>
-        <Button variant="text" color="inherit">
+        <Button
+          variant="text"
+          color="inherit"
+          onClick={() => setConfigDialogShown(true)}
+        >
           設定
         </Button>
         <MemberDialog
           open={memberDialogShown}
           onClose={handleCloseMemberDialog}
           members={members}
-          setMembers={setMembers}
+          setMembers={handleSaveMembers}
+          config={config}
+        />
+        <ConfigDialog
+          open={configDialogShown}
+          onClose={handleCloseConfigDialog}
+          config={config}
+          setConfig={handleSaveConfig}
+          members={members}
+          setMembers={handleSaveMembers}
         />
       </Box>
       <Box
@@ -107,6 +155,7 @@ function App() {
           color="primary"
           size="large"
           sx={{ fontSize: 32, px: 7 }}
+          disabled={!dealerRolled}
         >
           精算！
         </Button>
