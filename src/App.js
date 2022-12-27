@@ -4,6 +4,7 @@ import Member from "./Ohama/Member";
 import RollDialog from "./Ohama/RollDialog";
 import MemberDialog from "./Ohama/MemberDialog";
 import ConfigDialog from "./Ohama/ConfigDialog";
+import compareHands from "./Ohama/compareHands";
 
 function App() {
   const [members, setMembers] = useState([
@@ -83,8 +84,22 @@ function App() {
   }, [member]);
 
   const dealerName = members.find(({ isDealer }) => isDealer)?.name;
-  const dealerRolled =
-    rolls.findIndex(({ memberName }) => memberName === dealerName) >= 0;
+  const dealerRoll = rolls.find(({ memberName }) => memberName === dealerName);
+  const dealerRolled = Boolean(dealerRoll);
+
+  const handleFinishGame = useCallback(() => {
+    const refunded = rolls.map((roll) => {
+      if (roll.memberName === dealerName) {
+        return roll;
+      }
+
+      roll.refundMulti = compareHands(dealerRoll, roll);
+
+      return roll;
+    });
+
+    setRolls([...refunded]);
+  }, [dealerName, dealerRoll, rolls]);
 
   return (
     <Container maxWidth="xl">
@@ -136,6 +151,7 @@ function App() {
           .map((member) => (
             <Member
               key={member.name}
+              config={config}
               member={member}
               roll={rolls.find(({ memberName }) => memberName === member.name)}
               onClick={() => setMember(member)}
@@ -146,6 +162,7 @@ function App() {
           .map((member) => (
             <Member
               key={member.name}
+              config={config}
               member={member}
               roll={rolls.find(({ memberName }) => memberName === member.name)}
               onClick={() => setMember(member)}
@@ -159,6 +176,7 @@ function App() {
           size="large"
           sx={{ fontSize: 32, px: 7 }}
           disabled={!dealerRolled}
+          onClick={handleFinishGame}
         >
           精算！
         </Button>

@@ -3,10 +3,11 @@ import {
   Card,
   CardActionArea,
   CardContent,
+  Tooltip,
   Typography,
 } from "@mui/material";
 
-function Member({ member, roll, onClick, ...rest }) {
+function Member({ config, member, roll, onClick, ...rest }) {
   const rolled = Boolean(roll);
 
   const color = !rolled
@@ -32,12 +33,20 @@ function Member({ member, roll, onClick, ...rest }) {
         onClick={onClick}
         sx={{
           display: "flex",
-          justifyContent: "start",
+          justifyContent: "stretch",
           flexDirection: "column",
           alignItems: "stretch",
         }}
       >
-        <CardContent sx={{ padding: 1 }}>
+        <CardContent
+          sx={{
+            padding: 1,
+            flexGrow: 1,
+            display: "flex",
+            flexDirection: "column",
+            gap: 1,
+          }}
+        >
           <Box textAlign="center">
             <Typography
               variant="h5"
@@ -58,6 +67,7 @@ function Member({ member, roll, onClick, ...rest }) {
             gap={1}
             alignItems="center"
             justifyContent="stretch"
+            flexGrow={1}
           >
             <Box textAlign="center" flexGrow={0}>
               <Typography variant="h5" lineHeight={1}>
@@ -67,7 +77,50 @@ function Member({ member, roll, onClick, ...rest }) {
                 マチー
               </Typography>
             </Box>
-            <Box textAlign="center" flexGrow={1}>
+            <Box
+              textAlign="center"
+              flexGrow={1}
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+            >
+              {roll && !member.isDealer && (
+                <>
+                  <Typography variant="h5" lineHeight={1}>
+                    <Tooltip
+                      open={Boolean(roll?.refundMulti ?? false)}
+                      title={`\u00d7 ${roll?.refundMulti}`}
+                      placement="right-start"
+                      arrow
+                      componentsProps={{
+                        tooltip: {
+                          sx: {
+                            fontSize: 24,
+                            mt: -2,
+                            backgroundColor:
+                              roll?.refundMulti > 0
+                                ? "primary.main"
+                                : "error.main",
+                          },
+                        },
+                        arrow: {
+                          sx: {
+                            "&:before": {
+                              backgroundColor:
+                                roll?.refundMulti > 0
+                                  ? "primary.main"
+                                  : "error.main",
+                            },
+                          },
+                        },
+                      }}
+                    >
+                      <span>{config.betPoint.toLocaleString()}</span>
+                    </Tooltip>
+                    <span style={{ fontSize: 16, marginLeft: 2 }}>マチー</span>
+                  </Typography>
+                </>
+              )}
               {roll && (
                 <Typography
                   variant="h6"
