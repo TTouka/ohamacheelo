@@ -64,7 +64,7 @@ function Member({ member, roll, onClick, ...rest }) {
                 {member.point.toLocaleString()}
               </Typography>
               <Typography variant="h6" lineHeight={1} fontSize={14}>
-                マッチー
+                マチー
               </Typography>
             </Box>
             <Box textAlign="center" flexGrow={1}>

@@ -117,7 +117,7 @@ function MemberDialog({ config, open, onClose, members, setMembers }) {
           <TableHead>
             <TableRow>
               <TableCell>名前</TableCell>
-              <TableCell>マッチー</TableCell>
+              <TableCell>マチー</TableCell>
               <TableCell></TableCell>
             </TableRow>
           </TableHead>

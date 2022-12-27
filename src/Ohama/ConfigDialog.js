@@ -79,7 +79,7 @@ function ConfigDialog({
         <Box display="grid" gridTemplateColumns="1fr" gap={2} mt={2}>
           <Box>
             <TextField
-              label="初期持ちマッチー"
+              label="初期持ちマチー"
               fullWidth
               type="number"
               value={tmpConfig.initialPoint}
@@ -88,7 +88,7 @@ function ConfigDialog({
           </Box>
           <Box>
             <TextField
-              label="賭けマッチー"
+              label="賭けマチー"
               fullWidth
               type="number"
               value={tmpConfig.betPoint}
@@ -105,7 +105,7 @@ function ConfigDialog({
         <Box display="grid" gridTemplateColumns="1fr" gap={2} mt={2}>
           <Box textAlign="left">
             <Button color="error" onClick={handleResetPoint}>
-              全員のマッチーをリセットする
+              全員のマチーをリセットする
             </Button>
           </Box>
         </Box>
