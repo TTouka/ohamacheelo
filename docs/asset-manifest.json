@@ -1,12 +1,12 @@
 {
   "files": {
-    "main.js": "/ohamacheelo/static/js/main.e80011b6.js",
+    "main.js": "/ohamacheelo/static/js/main.ea9c0b59.js",
     "static/js/787.66c79409.chunk.js": "/ohamacheelo/static/js/787.66c79409.chunk.js",
     "index.html": "/ohamacheelo/index.html",
-    "main.e80011b6.js.map": "/ohamacheelo/static/js/main.e80011b6.js.map",
+    "main.ea9c0b59.js.map": "/ohamacheelo/static/js/main.ea9c0b59.js.map",
     "787.66c79409.chunk.js.map": "/ohamacheelo/static/js/787.66c79409.chunk.js.map"
   },
   "entrypoints": [
-    "static/js/main.e80011b6.js"
+    "static/js/main.ea9c0b59.js"
   ]
 }
