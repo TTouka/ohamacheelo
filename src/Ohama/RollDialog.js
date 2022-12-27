@@ -14,8 +14,8 @@ import Logs from "./Logs";
 
 const ROLES = [
   { dice: "111", name: "ピンゾロ", power: 5 },
-  { dice: "xxx", name: "ゾロ目", power: 3 },
-  { dice: "456", name: "ジゴロ", power: 2 },
+  { dice: "xxx", name: "アラシ", power: 3 },
+  { dice: "456", name: "シゴロ", power: 2 },
   { dice: "123", name: "ヒフミ", power: -2 },
   { dice: "334", name: "33-4", power: -5 },
 ];
