@@ -95,7 +95,7 @@ function Member({ config, member, roll, onClick, ...rest }) {
                       componentsProps={{
                         tooltip: {
                           sx: {
-                            fontSize: 24,
+                            fontSize: 18,
                             mt: -2,
                             backgroundColor:
                               roll?.refundMulti > 0
@@ -105,6 +105,7 @@ function Member({ config, member, roll, onClick, ...rest }) {
                         },
                         arrow: {
                           sx: {
+                            transform: "translate3d(0px, 4px, 0px) !important",
                             "&:before": {
                               backgroundColor:
                                 roll?.refundMulti > 0
