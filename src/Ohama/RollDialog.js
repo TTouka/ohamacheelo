@@ -6,12 +6,14 @@ import {
   DialogContent,
   DialogTitle,
   Divider,
+  InputAdornment,
   TextField,
   Typography,
 } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
 import Logs from "./Logs";
 import { useGame } from "./Store/useGame";
+import { useConfig } from "./Store/useConfig";
 
 const HANDS = [
   { dice: "111", name: "ピンゾロ", power: 5 },
@@ -55,15 +57,19 @@ function detectHand(dice) {
 }
 
 function RollDialog({ member, onClose, open, TransitionProps }) {
+  const { config } = useConfig();
+  const { setRoll, getRoll } = useGame();
+
   const [hand, setHand] = useState({});
   const [logs, setLogs] = useState([]);
-
-  const { setRoll } = useGame();
+  const [bet, setBet] = useState(config.betPoint);
 
   useEffect(() => {
-    setLogs([]);
+    const { log = [], bet = config.betPoint } = getRoll(member.name) ?? {};
+    setLogs(log);
+    setBet(bet);
     setHand({});
-  }, [member, setLogs, setHand]);
+  }, [config, member, getRoll, setLogs, setBet, setHand]);
 
   const handleDiceInput = useCallback(
     (ev) => {
@@ -112,9 +118,9 @@ function RollDialog({ member, onClose, open, TransitionProps }) {
   );
 
   const handleCommit = useCallback(() => {
-    setRoll(member.name, logs);
+    setRoll(member.name, logs, bet);
     handleClose();
-  }, [member, setRoll, logs, handleClose]);
+  }, [member, setRoll, bet, logs, handleClose]);
 
   return (
     <Dialog
@@ -130,7 +136,32 @@ function RollDialog({ member, onClose, open, TransitionProps }) {
       <DialogContent>
         <Box display="flex" flexDirection="column" alignContent="center">
           <TextField
-            autoFocus
+            fullWidth
+            placeholder="賭けるマチー"
+            value={bet}
+            onChange={({ target: { value } }) => setBet(Number(value))}
+            sx={{
+              mb: 1,
+              input: {
+                textAlign: "center",
+                MozAppearance: "textfield",
+                "&::-webkit-inner-spin-button": {
+                  WebkitAppearance: "none",
+                },
+                "&::-webkit-outer-spin-button": {
+                  WebkitAppearance: "none",
+                },
+              },
+            }}
+            type="number"
+            variant="outlined"
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">マチー</InputAdornment>
+              ),
+            }}
+          />
+          <TextField
             fullWidth
             placeholder="出目"
             sx={{

@@ -128,7 +128,7 @@ function Member({ member, onClick, disabled, ...rest }) {
                     }}
                   >
                     <Typography variant="h5" lineHeight={1}>
-                      {config.betPoint.toLocaleString()}
+                      {roll.bet.toLocaleString()}
                       <Unit ligature />
                     </Typography>
                   </Tooltip>

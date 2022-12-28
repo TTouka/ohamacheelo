@@ -29,7 +29,7 @@ export function GameContextProvider({ children }) {
   );
 
   const setRoll = useCallback(
-    (memberName, rollLog) => {
+    (memberName, rollLog, bet) => {
       const lastRoll = rollLog.slice(-1)[0];
 
       const existing = rolls.findIndex(
@@ -38,9 +38,9 @@ export function GameContextProvider({ children }) {
 
       if (existing >= 0) {
         // 上書き
-        rolls[existing] = { memberName, ...lastRoll, log: rollLog };
+        rolls[existing] = { memberName, ...lastRoll, log: rollLog, bet };
       } else {
-        rolls.push({ memberName, ...lastRoll, log: rollLog });
+        rolls.push({ memberName, ...lastRoll, log: rollLog, bet });
       }
 
       setRolls([...rolls]);
