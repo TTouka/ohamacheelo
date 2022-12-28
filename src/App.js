@@ -1,5 +1,8 @@
 import { createTheme, ThemeProvider } from "@mui/material";
 import Board from "./Ohama/Board";
+import { ConfigContextProvider } from "./Ohama/Store/useConfig";
+import { GameContextProvider } from "./Ohama/Store/useGame";
+import { MembersContextProvider } from "./Ohama/Store/useMembers";
 
 function App() {
   const theme = createTheme({
@@ -14,13 +17,19 @@ function App() {
         '"Apple Color Emoji"',
         '"Segoe UI Emoji"',
         '"Segoe UI Symbol"',
-      ].join(','),
+      ].join(","),
     },
   });
 
   return (
     <ThemeProvider theme={theme}>
-      <Board />
+      <MembersContextProvider>
+        <ConfigContextProvider>
+          <GameContextProvider>
+            <Board />
+          </GameContextProvider>
+        </ConfigContextProvider>
+      </MembersContextProvider>
     </ThemeProvider>
   );
 }

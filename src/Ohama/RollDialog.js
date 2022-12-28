@@ -11,8 +11,9 @@ import {
 } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
 import Logs from "./Logs";
+import { useGame } from "./Store/useGame";
 
-const ROLES = [
+const HANDS = [
   { dice: "111", name: "ピンゾロ", power: 5 },
   { dice: "xxx", name: "アラシ", power: 3 },
   { dice: "456", name: "シゴロ", power: 2 },
@@ -20,18 +21,18 @@ const ROLES = [
   { dice: "334", name: "33-4", power: -5 },
 ];
 
-function detectRole(dice) {
+function detectHand(dice) {
   const nums = dice.split("");
   nums.sort();
   let diceSorted = nums.join("");
 
-  const role = ROLES.find(({ dice }) => dice === diceSorted);
-  if (role) {
-    return { ...role, dice };
+  const hand = HANDS.find(({ dice }) => dice === diceSorted);
+  if (hand) {
+    return { ...hand, dice };
   }
   if (nums[0] === nums[1] && nums[0] === nums[2]) {
     // ゾロ目
-    return { ...ROLES.find(({ dice }) => dice === "xxx"), dice };
+    return { ...HANDS.find(({ dice }) => dice === "xxx"), dice };
   }
 
   const numSorted = nums.reduce((acc, num) => {
@@ -53,26 +54,28 @@ function detectRole(dice) {
   return { name: "役なし", dice };
 }
 
-function RollDialog({ member, onClose, open, onTurnEnd, TransitionProps }) {
-  const [role, setRole] = useState({});
+function RollDialog({ member, onClose, open, TransitionProps }) {
+  const [hand, setHand] = useState({});
   const [logs, setLogs] = useState([]);
+
+  const { setRoll } = useGame();
 
   useEffect(() => {
     setLogs([]);
-    setRole({});
-  }, [member, setLogs, setRole]);
+    setHand({});
+  }, [member, setLogs, setHand]);
 
   const handleDiceInput = useCallback(
     (ev) => {
       const dice = ev.target.value.toString();
       if (!dice.match(/^[1-6]{3}$/)) {
-        setRole({});
+        setHand({});
 
         return;
       }
-      setRole(detectRole(dice));
+      setHand(detectHand(dice));
     },
-    [setRole]
+    [setHand]
   );
 
   const handleKeyDown = useCallback(
@@ -86,10 +89,10 @@ function RollDialog({ member, onClose, open, onTurnEnd, TransitionProps }) {
         return;
       }
 
-      const role = detectRole(dice);
-      setLogs([...logs, role]);
+      const hand = detectHand(dice);
+      setLogs([...logs, hand]);
       ev.target.value = "";
-      setRole({});
+      setHand({});
     },
     [logs, setLogs]
   );
@@ -109,9 +112,9 @@ function RollDialog({ member, onClose, open, onTurnEnd, TransitionProps }) {
   );
 
   const handleCommit = useCallback(() => {
-    onTurnEnd(member, logs);
+    setRoll(member.name, logs);
     handleClose();
-  }, [member, onTurnEnd, logs, handleClose]);
+  }, [member, setRoll, logs, handleClose]);
 
   return (
     <Dialog
@@ -152,7 +155,7 @@ function RollDialog({ member, onClose, open, onTurnEnd, TransitionProps }) {
             title="入力したらEnter"
           />
           <Typography variant="h6" component="div" textAlign="center">
-            {role.name ?? "-"}
+            {hand.name ?? "-"}
           </Typography>
           <Button color="warning" variant="text" onClick={handleFumble}>
             ションベン！

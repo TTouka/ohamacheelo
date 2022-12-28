@@ -12,8 +12,10 @@ import {
   TextField,
 } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
+import { useMembers } from "./Store/useMembers";
 
-function MemberDialog({ config, open, onClose, members, setMembers }) {
+function MemberDialog({ config, open, onClose }) {
+  const { members, saveMembers } = useMembers();
   const [tmpMembers, setTmpMembers] = useState([...members]);
   useEffect(() => {
     setTmpMembers([...members]);
@@ -21,9 +23,9 @@ function MemberDialog({ config, open, onClose, members, setMembers }) {
 
   //
   const handleSaveMembers = useCallback(() => {
-    setMembers(tmpMembers);
+    saveMembers(tmpMembers);
     onClose();
-  }, [setMembers, onClose, tmpMembers]);
+  }, [saveMembers, onClose, tmpMembers]);
 
   //
   const [toAdd, setToAdd] = useState("");
@@ -95,10 +97,10 @@ function MemberDialog({ config, open, onClose, members, setMembers }) {
         return;
       }
 
-      setMembers(tmpMembers);
+      saveMembers(tmpMembers);
       onClose();
     },
-    [setMembers, onClose, tmpMembers]
+    [saveMembers, onClose, tmpMembers]
   );
 
   return (

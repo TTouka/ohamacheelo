@@ -8,15 +8,13 @@ import {
   TextField,
 } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
+import { useConfig } from "./Store/useConfig";
+import { useMembers } from "./Store/useMembers";
 
-function ConfigDialog({
-  open,
-  onClose,
-  config,
-  setConfig,
-  members,
-  setMembers,
-}) {
+function ConfigDialog({ open, onClose }) {
+  const { members, saveMembers } = useMembers();
+  const { config, saveConfig } = useConfig();
+
   const [tmpConfig, setTmpConfig] = useState({ ...config });
   useEffect(() => {
     setTmpConfig({ ...config });
@@ -24,9 +22,9 @@ function ConfigDialog({
 
   //
   const handleSaveConfig = useCallback(() => {
-    setConfig(tmpConfig);
+    saveConfig(tmpConfig);
     onClose();
-  }, [setConfig, onClose, tmpConfig]);
+  }, [saveConfig, onClose, tmpConfig]);
 
   //
   const handleChangeConfig = useCallback(
@@ -51,18 +49,18 @@ function ConfigDialog({
         return;
       }
 
-      setConfig(tmpConfig);
+      saveConfig(tmpConfig);
       onClose();
     },
-    [setConfig, onClose, tmpConfig]
+    [saveConfig, onClose, tmpConfig]
   );
 
   //
   const handleResetPoint = useCallback(() => {
-    setMembers([
+    saveMembers([
       ...members.map((member) => ({ ...member, point: config.initialPoint })),
     ]);
-  }, [members, setMembers, config]);
+  }, [members, saveMembers, config]);
 
   return (
     <Dialog

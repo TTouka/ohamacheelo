@@ -6,9 +6,14 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
+import { useConfig } from "./Store/useConfig";
+import { useGame } from "./Store/useGame";
 import Unit from "./Unit";
 
-function Member({ config, member, roll, onClick, ...rest }) {
+function Member({ member, onClick, disabled, ...rest }) {
+  const { config } = useConfig();
+  const { getRoll } = useGame();
+  const roll = getRoll(member.name);
   const rolled = Boolean(roll);
 
   const color = !rolled
@@ -31,6 +36,7 @@ function Member({ config, member, roll, onClick, ...rest }) {
       {...rest}
     >
       <CardActionArea
+        disabled={disabled}
         onClick={onClick}
         sx={{
           display: "flex",
@@ -93,6 +99,11 @@ function Member({ config, member, roll, onClick, ...rest }) {
                     placement="right-start"
                     arrow
                     componentsProps={{
+                      popper: {
+                        sx: {
+                          zIndex: 1000,
+                        },
+                      },
                       tooltip: {
                         sx: {
                           fontSize: 18,
@@ -105,7 +116,7 @@ function Member({ config, member, roll, onClick, ...rest }) {
                       },
                       arrow: {
                         sx: {
-                          transform: "translate3d(0px, 4px, 0px) !important",
+                          transform: "translate3d(0px, 4.75px, 0px) !important",
                           "&:before": {
                             backgroundColor:
                               roll?.refundMulti > 0
