@@ -8,6 +8,7 @@ import ConfigDialog from "./ConfigDialog";
 import { useMembers } from "./Store/useMembers";
 import { useConfig } from "./Store/useConfig";
 import { useGame } from "./Store/useGame";
+import XlButton from "./XlButton";
 
 function Board() {
   const { members, dealer } = useMembers();
@@ -94,27 +95,19 @@ function Board() {
       </Box>
       <Box textAlign="center" sx={{ py: 2 }} position="sticky" bottom={0}>
         {isGameOpen && (
-          <Button
+          <XlButton
             variant="contained"
             color="primary"
-            size="large"
-            sx={{ fontSize: 32, px: 7 }}
             disabled={!Boolean(dealerRoll)}
             onClick={() => closeGame(dealerName)}
           >
             精算！
-          </Button>
+          </XlButton>
         )}
         {!isGameOpen && (
-          <Button
-            variant="contained"
-            color="primary"
-            size="large"
-            sx={{ fontSize: 32, px: 7 }}
-            onClick={openNewGame}
-          >
+          <XlButton variant="contained" color="primary" onClick={openNewGame}>
             次のゲームを始める
-          </Button>
+          </XlButton>
         )}
         <RollDialog
           member={rollingMember}
