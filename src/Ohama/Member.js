@@ -6,6 +6,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
+import PointBanner from "./PointBanner";
 import { useGame } from "./Store/useGame";
 import Unit from "./Unit";
 
@@ -80,27 +81,9 @@ function Member({ member, onClick, disabled, ...rest }) {
               flexShrink={0}
               flexBasis="30%"
               position="relative"
-              minHeight="50px"
+              minHeight="60px"
             >
-              <Box position="absolute" top={0} bottom={0} left={0} right={0}>
-                <Box
-                  sx={{
-                    transform:
-                      "translateX(-220px) translateY(-5px) rotate(45deg)",
-                  }}
-                  width="500px"
-                  textAlign="center"
-                  backgroundColor="aliceblue"
-                  paddingY={1}
-                >
-                  <Typography variant="h5" lineHeight={1}>
-                    {member.point.toLocaleString()}
-                  </Typography>
-                  <Typography variant="h6" lineHeight={1} fontSize={14}>
-                    <Unit />
-                  </Typography>
-                </Box>
-              </Box>
+              <PointBanner member={member} roll={roll} />
             </Box>
             <Box
               textAlign="center"

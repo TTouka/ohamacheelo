@@ -11,7 +11,7 @@ import { useGame } from "./Store/useGame";
 import XlButton from "./XlButton";
 
 function Board() {
-  const { members, dealer } = useMembers();
+  const { members, dealer, applyWon } = useMembers();
   const { config } = useConfig();
   const {
     rolls,
@@ -99,7 +99,7 @@ function Board() {
             variant="contained"
             color="primary"
             disabled={!Boolean(dealerRoll)}
-            onClick={() => closeGame(dealerName)}
+            onClick={() => closeGame(dealerName, applyWon)}
           >
             精算！
           </XlButton>

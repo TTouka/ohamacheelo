@@ -60,19 +60,31 @@ export function GameContextProvider({ children }) {
   );
 
   const closeGame = useCallback(
-    (dealerName) => {
+    (dealerName, wonApplier) => {
       const dealerRoll = getRoll(dealerName);
-      const refunded = rolls.map((roll) => {
-        if (roll.memberName === dealerName) {
+      let dealerWon = 0;
+
+      const refunded = rolls
+        .map((roll) => {
+          if (roll.memberName === dealerName) {
+            return roll;
+          }
+
+          roll.refundMulti = compareHands(dealerRoll, roll);
+          roll.won = roll.bet * roll.refundMulti;
+          dealerWon -= roll.won;
+
           return roll;
-        }
-
-        roll.refundMulti = compareHands(dealerRoll, roll);
-
-        return roll;
-      });
+        })
+        .map((roll) => {
+          if (roll.memberName === dealerName) {
+            roll.won = dealerWon;
+          }
+          return roll;
+        });
 
       setRolls([...refunded]);
+      wonApplier(rolls);
       setGame({ ...game, isOpen: false });
     },
     [getRoll, setRolls, rolls, game, setGame]

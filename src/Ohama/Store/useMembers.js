@@ -34,6 +34,27 @@ export function MembersContextProvider({ children }) {
     [setMembers]
   );
 
+  const applyWon = useCallback(
+    (rolls) => {
+      saveMembers([
+        ...members.map((member) => {
+          const roll = rolls.find(
+            ({ memberName }) => memberName === member.name
+          );
+
+          if (!roll) {
+            return member;
+          }
+
+          member.point += roll.won;
+
+          return member;
+        }),
+      ]);
+    },
+    [members, saveMembers]
+  );
+
   return (
     <MembersContext.Provider
       value={{
@@ -41,6 +62,7 @@ export function MembersContextProvider({ children }) {
         setMembers,
         saveMembers,
         dealer,
+        applyWon,
       }}
     >
       {children}
