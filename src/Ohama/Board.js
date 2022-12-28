@@ -36,7 +36,7 @@ function Board() {
 
   return (
     <Container maxWidth="xl">
-      <Box textAlign="right" marginBottom={1}>
+      <Box textAlign="right" marginBottom={1} position="sticky" top={0}>
         <Button
           variant="text"
           color="inherit"
@@ -63,6 +63,7 @@ function Board() {
       </Box>
       <Box
         display="grid"
+        overflow="auto"
         gap={1}
         sx={{
           gridTemplateColumns: {
@@ -91,7 +92,7 @@ function Board() {
             />
           ))}
       </Box>
-      <Box textAlign="center" sx={{ mt: 2 }}>
+      <Box textAlign="center" sx={{ py: 2 }} position="sticky" bottom={0}>
         {isGameOpen && (
           <Button
             variant="contained"
@@ -115,13 +116,13 @@ function Board() {
             次のゲームを始める
           </Button>
         )}
+        <RollDialog
+          member={rollingMember}
+          open={rollDialogShown}
+          onClose={() => setRollDialogShown(false)}
+          TransitionProps={{ onExited: () => setRollingMember({}) }}
+        />
       </Box>
-      <RollDialog
-        member={rollingMember}
-        open={rollDialogShown}
-        onClose={() => setRollDialogShown(false)}
-        TransitionProps={{ onExited: () => setRollingMember({}) }}
-      />
     </Container>
   );
 }
