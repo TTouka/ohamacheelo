@@ -6,12 +6,10 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import { useConfig } from "./Store/useConfig";
 import { useGame } from "./Store/useGame";
 import Unit from "./Unit";
 
 function Member({ member, onClick, disabled, ...rest }) {
-  const { config } = useConfig();
   const { getRoll } = useGame();
   const roll = getRoll(member.name);
   const rolled = Boolean(roll);
@@ -54,7 +52,7 @@ function Member({ member, onClick, disabled, ...rest }) {
             gap: 1,
           }}
         >
-          <Box textAlign="center">
+          <Box textAlign="center" zIndex={10}>
             <Typography
               variant="h5"
               component="div"
@@ -76,17 +74,39 @@ function Member({ member, onClick, disabled, ...rest }) {
             justifyContent="stretch"
             flexGrow={1}
           >
-            <Box textAlign="center" flexGrow={0}>
-              <Typography variant="h5" lineHeight={1}>
-                {member.point.toLocaleString()}
-              </Typography>
-              <Typography variant="h6" lineHeight={1} fontSize={14}>
-                <Unit />
-              </Typography>
+            <Box
+              textAlign="center"
+              flexGrow={0}
+              flexShrink={0}
+              flexBasis="30%"
+              position="relative"
+              minHeight="50px"
+            >
+              <Box position="absolute" top={0} bottom={0} left={0} right={0}>
+                <Box
+                  sx={{
+                    transform:
+                      "translateX(-220px) translateY(-5px) rotate(45deg)",
+                  }}
+                  width="500px"
+                  textAlign="center"
+                  backgroundColor="aliceblue"
+                  paddingY={1}
+                >
+                  <Typography variant="h5" lineHeight={1}>
+                    {member.point.toLocaleString()}
+                  </Typography>
+                  <Typography variant="h6" lineHeight={1} fontSize={14}>
+                    <Unit />
+                  </Typography>
+                </Box>
+              </Box>
             </Box>
             <Box
               textAlign="center"
-              flexGrow={1}
+              flexGrow={0}
+              flexShrink={0}
+              flexBasis="70%"
               display="flex"
               flexDirection="column"
               alignItems="center"
