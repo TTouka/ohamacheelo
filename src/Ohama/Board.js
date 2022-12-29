@@ -41,6 +41,14 @@ function Board() {
         <Button
           variant="text"
           color="inherit"
+          href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQJ_BqmPGmMc6R9VirLqKB8CIrLNkmX4gzSQioqej9Vy5osVn11qE8ie5ExX03XJh5f3dGwwuPwTdRz/pubhtml?gid=0&single=true"
+          target="_blank"
+        >
+          勝敗と倍率
+        </Button>
+        <Button
+          variant="text"
+          color="inherit"
           onClick={() => setMemberDialogShown(true)}
         >
           参加者
