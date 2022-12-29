@@ -48,39 +48,67 @@ function PointBanner({ roll, member }) {
     }
   }, [tmpPoint, member.point, updatingPoint]);
 
-  return (
-    <Box position="absolute" top={0} bottom={0} left={0} right={0}>
-      {tmpWon !== 0 && (
+  if (tmpWon === 0) {
+    return (
+      <Box position="absolute" top={0} bottom={0} left={0} right={0}>
         <Box
-          sx={{
-            transform: "translateX(100px) rotate(45deg)",
-          }}
+          sx={{ transform: "translateX(30px) rotate(45deg)" }}
           width="500px"
           textAlign="center"
           position="absolute"
           left={-250}
-          backgroundColor="mistyrose"
+          backgroundColor="lightcyan"
           paddingY={1}
         >
           <Typography variant="h5" lineHeight={1}>
-            {(tmpWon ?? 0) > 0 && "+"}
-            {tmpWon?.toLocaleString()}
+            {tmpPoint.toLocaleString()}
           </Typography>
           <Typography variant="h6" lineHeight={1} fontSize={14}>
             <Unit />
           </Typography>
         </Box>
-      )}
+      </Box>
+    );
+  }
+
+  return (
+    <Box position="absolute" top={0} bottom={0} left={0} right={0}>
       <Box
         sx={{
-          transform: "translateX(30px) rotate(45deg)",
+          transform:
+            "translate(22px, 8px) translate(25px, -14px) scale(0.75, 0.75) rotate(45deg)",
         }}
         width="500px"
-        textAlign="center"
         position="absolute"
         left={-250}
-        backgroundColor="lightcyan"
         paddingY={1}
+        textAlign="center"
+        backgroundColor="mistyrose"
+      >
+        <Typography variant="h5" lineHeight={1}>
+          {(tmpWon ?? 0) > 0 && "+"}
+          {tmpWon?.toLocaleString()}
+          <Typography
+            variant="h6"
+            lineHeight={1}
+            fontSize={14}
+            component="span"
+          >
+            <Unit />
+          </Typography>
+        </Typography>
+      </Box>
+      <Box
+        sx={{
+          transform:
+            "translate(20px, 10px) translate(0,0) scale(0.75, 0.75) rotate(45deg)",
+        }}
+        width="500px"
+        position="absolute"
+        left={-250}
+        paddingY={1}
+        textAlign="center"
+        backgroundColor="lightcyan"
       >
         <Typography variant="h5" lineHeight={1}>
           {tmpPoint.toLocaleString()}

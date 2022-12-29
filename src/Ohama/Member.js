@@ -93,13 +93,14 @@ function Member({ member, onClick, disabled, ...rest }) {
               display="flex"
               flexDirection="column"
               alignItems="center"
+              zIndex={10}
             >
               {roll && !member.isDealer && (
-                <>
+                <Typography variant="h5" lineHeight={1}>
                   <Tooltip
                     open={Boolean(roll?.refundMulti ?? false)}
                     title={`\u00d7 ${roll?.refundMulti}`}
-                    placement="right-start"
+                    placement="right-end"
                     arrow
                     componentsProps={{
                       popper: {
@@ -109,6 +110,7 @@ function Member({ member, onClick, disabled, ...rest }) {
                       },
                       tooltip: {
                         sx: {
+                          transform: "rotate(-30deg) !important",
                           fontSize: 18,
                           mt: -2,
                           backgroundColor:
@@ -119,7 +121,7 @@ function Member({ member, onClick, disabled, ...rest }) {
                       },
                       arrow: {
                         sx: {
-                          transform: "translate3d(0px, 4.75px, 0px) !important",
+                          transform: "translate3d(1px, 4.75px, 0px) !important",
                           "&:before": {
                             backgroundColor:
                               roll?.refundMulti > 0
@@ -130,12 +132,10 @@ function Member({ member, onClick, disabled, ...rest }) {
                       },
                     }}
                   >
-                    <Typography variant="h5" lineHeight={1}>
-                      {roll.bet.toLocaleString()}
-                      <Unit ligature />
-                    </Typography>
+                    <span>{roll.bet.toLocaleString()}</span>
                   </Tooltip>
-                </>
+                  <Unit ligature />
+                </Typography>
               )}
               {roll && (
                 <Typography
