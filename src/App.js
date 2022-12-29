@@ -1,4 +1,5 @@
 import { createTheme, ThemeProvider } from "@mui/material";
+import ErrorBoundary from "./ErrorBoundary";
 import Board from "./Ohama/Board";
 import { ConfigContextProvider } from "./Ohama/Store/useConfig";
 import { GameContextProvider } from "./Ohama/Store/useGame";
@@ -23,13 +24,15 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <MembersContextProvider>
-        <ConfigContextProvider>
-          <GameContextProvider>
-            <Board />
-          </GameContextProvider>
-        </ConfigContextProvider>
-      </MembersContextProvider>
+      <ErrorBoundary>
+        <MembersContextProvider>
+          <ConfigContextProvider>
+            <GameContextProvider>
+              <Board />
+            </GameContextProvider>
+          </ConfigContextProvider>
+        </MembersContextProvider>
+      </ErrorBoundary>
     </ThemeProvider>
   );
 }
