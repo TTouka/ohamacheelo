@@ -36,6 +36,8 @@ function PointBanner({ roll, member }) {
     if (roll?.won && !updatingWon && roll?.won !== tmpWon) {
       setUpdatingWon(true);
       stepCount(tmpWon, roll?.won, setTmpWon, () => setUpdatingWon(false));
+    } else if ((roll?.won ?? null) === null) {
+      setTmpWon(0);
     }
   }, [tmpWon, roll?.won, updatingWon]);
 
