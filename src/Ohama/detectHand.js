@@ -11,7 +11,7 @@ const HANDS = [
   //
   { dice: "123", name: "ヒフミ", power: -2 },
   //
-  { dice: "334", name: "33-4", power: -5 },
+  { dice: "334", name: "33-4", power: -5, orderSensitive: true },
 ];
 
 function detectHand(dice) {
@@ -19,7 +19,12 @@ function detectHand(dice) {
   nums.sort();
   let diceSorted = nums.join("");
 
-  const hand = HANDS.find(({ dice }) => dice === diceSorted);
+  const hand = HANDS.find(({ dice: handDice, orderSensitive = false }) => {
+    if (orderSensitive) {
+      return handDice === dice;
+    }
+    return handDice === diceSorted;
+  });
   if (hand) {
     return { ...hand, dice };
   }
@@ -40,7 +45,7 @@ function detectHand(dice) {
     };
   }
 
-  return { name: "役なし", power: 0, dice };
+  return { name: "目なし", power: 0, dice };
 }
 
 export default detectHand;
