@@ -95,32 +95,34 @@ function RollDialog({ member, onClose, open, TransitionProps }) {
       </DialogTitle>
       <DialogContent>
         <Box display="flex" flexDirection="column" alignContent="center">
-          <TextField
-            fullWidth
-            placeholder="賭けるマチー"
-            value={bet}
-            onChange={({ target: { value } }) => setBet(Number(value))}
-            sx={{
-              mb: 1,
-              input: {
-                textAlign: "center",
-                MozAppearance: "textfield",
-                "&::-webkit-inner-spin-button": {
-                  WebkitAppearance: "none",
+          {!member.isDealer && (
+            <TextField
+              fullWidth
+              placeholder="賭けるマチー"
+              value={bet}
+              onChange={({ target: { value } }) => setBet(Number(value))}
+              sx={{
+                mb: 1,
+                input: {
+                  textAlign: "center",
+                  MozAppearance: "textfield",
+                  "&::-webkit-inner-spin-button": {
+                    WebkitAppearance: "none",
+                  },
+                  "&::-webkit-outer-spin-button": {
+                    WebkitAppearance: "none",
+                  },
                 },
-                "&::-webkit-outer-spin-button": {
-                  WebkitAppearance: "none",
-                },
-              },
-            }}
-            type="number"
-            variant="outlined"
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">マチー</InputAdornment>
-              ),
-            }}
-          />
+              }}
+              type="number"
+              variant="outlined"
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">マチー</InputAdornment>
+                ),
+              }}
+            />
+          )}
           <TextField
             fullWidth
             placeholder="出目"
