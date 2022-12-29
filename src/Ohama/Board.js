@@ -37,7 +37,7 @@ function Board() {
 
   return (
     <Container maxWidth="xl">
-      <Box textAlign="right" marginBottom={1} position="sticky" top={0}>
+      <Box textAlign="right" marginBottom={1} position="sticky" top={0} zIndex={20}>
         <Button
           variant="text"
           color="inherit"
@@ -101,7 +101,7 @@ function Board() {
             />
           ))}
       </Box>
-      <Box textAlign="center" sx={{ py: 2 }} position="sticky" bottom={0}>
+      <Box textAlign="center" sx={{ py: 2 }} position="sticky" bottom={0} zIndex={20}>
         {isGameOpen && (
           <XlButton
             variant="contained"
